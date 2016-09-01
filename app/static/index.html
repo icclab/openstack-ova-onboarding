@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" ng-app="boarding">
+<head>
+  <meta charset="utf-8">
+
+  <title>Vm boarding</title>
+
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <!-- Load libs -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-file-upload/dist/angular-file-upload.js"></script>
+
+
+  <script src="angular/app.js"></script>
+
+  <!-- View controllers -->
+  <script src="angular/views/navbar/navbar-controller.js"></script>
+  <script src="angular/views/home/home-controller.js"></script>
+
+  <!-- Services -->
+  <script src="angular/services/home-service.js"></script>
+
+  <!-- Directives -->
+  <script src="angular/directives/file-model.js"></script>
+
+</head>
+<body>
+  <ul ng-controller="NavbarController" class="nav nav-tabs">
+      <li ng-class="{ active: isActive('about')}"><a href="#/about">About</a></li>
+      <li ng-class="{ active: isActive('home')}"><a href="#/home">Home</a></li>
+
+  </ul>
+
+  <div class = "container"><div ng-view class="view-animate"></div></div>
+
+
+</body>
+</html>

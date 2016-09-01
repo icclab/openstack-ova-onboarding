@@ -1,0 +1,7 @@
+Flask==0.10.1
+pbr
+netifaces
+keystoneauth1
+python-novaclient
+python-glanceclient==1.2
+python-heatclient==1.2
