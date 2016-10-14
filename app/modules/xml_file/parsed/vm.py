@@ -5,7 +5,7 @@ from app import app
 
 def generate_template(vm_list):
     yaml_dict = {"heat_template_version": "2015-04-30",
-                 "description": "here",
+                 "description": "ova",
                  "resources": {}
                  }
     list_of_common_networks=[]
@@ -109,7 +109,10 @@ class ParsedVM:
         return self.get_meter_by_description("Memory Size")
 
     def get_cpu(self):
-        return self.get_meter_by_description("Number of virtual CPUs")
+        try:
+            return self.get_meter_by_description("Number of virtual CPUs")
+        except:
+            return self.get_meter_by_description("Number of Virtual CPUs")
 
     def get_image(self):
         try:

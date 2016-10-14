@@ -4,6 +4,22 @@ Vm onboarding framework was developed in order to make OVA file import process t
 
 ### Quick start 
 
+#### Intagrate Horizon 
+
+Copy intagration file to horizon directory:
+
+    cp _50_onboarding.py .../horizon/openstack_dashboard/enabled/
+
+Copy view foled:
+     
+    cp -rf onboarding/ .../horizon/openstack_dashboard/dashboards/
+
+And restart apache2 service:
+    
+    service apache2 restart
+
+#### Run ova onbaording service  
+
 First of all before importing OVA file make sure that local virtual machine images contain cloud init package. 
 
 All requirements for the tool are specified in the requirements.txt file. Before starting, it is strongly recommended to use virtual environment:
@@ -15,14 +31,9 @@ Requirements can be easily installed with pip tool
 
     pip install -r requirements.txt
 
-AngularJS dependencies are described below bower.json file. Before installing them nodejs, nodejs-legacy, npm, python-dev packages should be installed. Frontend components can be installed with simple command:
-
-    npm install
-
-All these steps are also described in script.sh file. You can simply run it via
-
-    bash script.sh 
-
+To run service execute run.py file:
+    
+    python run.py
 
 ### Configuration file
 Backend configuration is located in “app/__init__.py ” file.

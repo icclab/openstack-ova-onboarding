@@ -15,7 +15,7 @@ def extract_file(ova_file, temp_location):
     copyfile(temp_location+ova_file, temp_tar)
     # Extract file
     ova = tarfile.open(temp_tar, 'r')
-    ova.extractall(temp_location)
+    ova.extractall(temp_location+ova_file.replace(".ova", "") + '/')
     return pre+".ovf"
 
 

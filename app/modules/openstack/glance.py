@@ -10,10 +10,7 @@ class GlanceClient:
         self.region = region
 
     def get_client(self):
-        if self.region:
-            return client.Client(self.version, session=self.session, region_name=self.region)
-        else:
-            return client.Client(self.version, session=self.session)
+        return client.Client(self.version, session=self.session)
 
     def get_image_list(self):
         LOG.info("Fetching image list ...")

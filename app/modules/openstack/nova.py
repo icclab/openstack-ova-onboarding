@@ -29,10 +29,7 @@ class NovaClient:
         self.region = region
 
     def get_client(self):
-        if self.region:
-            return client.Client(self.version, session=self.session, region_name=self.region)
-        else:
-            return client.Client(self.version, session=self.session)
+        return client.Client(self.version, session=self.session, region_name=self.region)
 
     def get_flavors_list(self):
         return self.get_client().flavors.list()
