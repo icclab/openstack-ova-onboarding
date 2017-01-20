@@ -10,16 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
-
-import horizon
+from horizon.test import helpers as test
 
 
-class Onboarding(horizon.Dashboard):
-    name = _("Onboarding")
-    slug = "onboarding"  # Add your panels here.
-    panels = ('exporting', 'importing')
-    default_panel = 'exporting'  # Specify the slug of the dashboard's default panel.
-
-
-horizon.register(Onboarding)
+class OvaTests(test.TestCase):
+    # Unit tests for importing.
+    def test_me(self):
+        self.assertTrue(1 + 1 == 2)

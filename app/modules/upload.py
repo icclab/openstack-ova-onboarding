@@ -8,9 +8,9 @@ from app.modules.xml_file.parsed.file import extract_file, transform_parsed_vms
 from app.modules.xml_file.parsed.vm import generate_template
 from flask import Blueprint, request
 from xml_file.reader import GeneratedVM
-from openstack.session import Session
+from openstack.session import get_valid_session
 from openstack.glance import GlanceClient
-from openstack.nova import NovaClient
+from openstack.nova import NovaClient, from_bytes_to_gb
 from openstack.heat import HeatClient
 
 mod = Blueprint('uploading', __name__)
@@ -29,17 +29,21 @@ def add_uuid(filename):
     return filename.rsplit('.', 1)[0] + str(uuid.uuid1()) + "." + filename.rsplit('.', 1)[1]
 
 
+def clean(folder):
+    os.remove(folder + ".ova")
+    os.remove(folder + ".tar")
+    shutil.rmtree(folder)
+
+
 @mod.route('/api/upload', methods=['POST'])
 def upload():
     openstack = request.form
     region = openstack['region']
-    session = Session(auth_url=openstack['url'],
-                      token=openstack['token'],
-                      tenant_id=openstack['project_id'], )
-
+    session = get_valid_session(openstack)
     nova = NovaClient(session=session.session, version=2, region=region)
     glance = GlanceClient(session=session.session, version=2, region=region)
     heat = HeatClient(version=1, endpoint=session.get_endpoint("heat", region), token=session.token)
+    image_list = []
     if nova.get_status() and glance.get_status() and heat.get_status():
         LOG.info("Connection to all services are established")
         image_file = request.files['file']
@@ -58,29 +62,30 @@ def upload():
         folder = temp_location+ovf_file.replace(".ovf", "")
         try:
             LOG.info("Parsing virtual information data from ovf file ...")
-            parsed_file = transform_parsed_vms(folder + '/'+openstack['ova_file'].replace("ova", "ovf"))
+            parsed_file = transform_parsed_vms(folder + '/'+image_file.filename.replace("ova", "ovf"))
             valid_vms = []
-            for vm in parsed_file["vms"]:
-                flavor = nova.get_best_flavor([int(vm.cpu), int(vm.ram), 0])
-                image_id = glance.upload_image(vm.image, folder + '/' + vm.image)
-                point = GeneratedVM(name=vm.name,
-                                    flavor=flavor,
-                                    image=image_id,
-                                    networks=vm.network["internal_network"],
-                                    sec_groups=vm.network["NAT"])
-                valid_vms.append(point)
-            LOG.info("Generating template file ...")
-            heat.create_stack(name=openstack['stack_name'], body=yaml.dump(generate_template(valid_vms)))
+            space_available, message = nova.check_quota(parsed_file["vms"])
+            if space_available:
+                LOG.info(message)
+                for vm in parsed_file["vms"]:
+                    flavor = nova.get_best_flavor([int(vm.cpu), int(vm.ram), from_bytes_to_gb(vm.disk)])
+                    image_id = glance.upload_image(vm.image, folder + '/' + vm.image)
+                    point = GeneratedVM(name=vm.name,
+                                        flavor=flavor,
+                                        image=image_id,
+                                        networks=vm.network["internal_network"],
+                                        sec_groups=vm.network["NAT"])
+                    image_list.append(image_id)
+                    valid_vms.append(point)
+                LOG.info("Generating template file ...")
+                heat.create_stack(name=openstack['stack_name'], body=yaml.dump(generate_template(valid_vms)))
+            else:
+                raise Exception(message)
         except:
-            os.remove(folder + ".ova")
-            os.remove(folder + ".tar")
-            shutil.rmtree(folder)
+            glance.remove_list_of_images(image_list)
+            clean(folder)
             raise Exception("Couldn't create heat template")
-        os.remove(folder + ".ova")
-        os.remove(folder + ".tar")
-        shutil.rmtree(folder)
+        clean(folder)
         return str({"Ok"})
     else:
         LOG.error("Couldn't establish connection with all services")
-
-

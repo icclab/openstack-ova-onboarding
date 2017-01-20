@@ -10,16 +10,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
+from django.conf.urls import url
 
-import horizon
-
-
-class Onboarding(horizon.Dashboard):
-    name = _("Onboarding")
-    slug = "onboarding"  # Add your panels here.
-    panels = ('exporting', 'importing')
-    default_panel = 'exporting'  # Specify the slug of the dashboard's default panel.
+from openstack_dashboard.dashboards.onboarding.importing import views
 
 
-horizon.register(Onboarding)
+INDEX_URL = r'^$'
+ADD_OVA_URL = r'^importing'
+
+urlpatterns = [
+    url(INDEX_URL, views.OvaIndexView.as_view(), name='index'),
+    url(ADD_OVA_URL, views.ImportOVAView.as_view(), name='importing'),
+]

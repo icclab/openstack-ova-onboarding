@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="angular/views/home/home.css">
+<div class="edit-container view-animate">
+  <div class="row">
+    <div class="col-xs-4"><h2>Credentials</h2>
+      <label class="control-label" for="inputUsername">Username</label>
+      <input class="form-control" placeholder="username" ng-disabled=status.credentials_status ng-model="openstack.username" id="inputUsername" >
+      <label required class="control-label" for="inputPassword">Password</label>
+      <input class="form-control" placeholder="password" ng-disabled=status.credentials_status type="password" ng-model="openstack.password" id="inputPassword" >
+      <div class="row">
+        <div class="col-xs-6">
+          <label required class="control-label" for="inputTenant">Tenant Id</label>
+          <input class="form-control" placeholder="tenant_id" ng-disabled=status.credentials_status ng-model="openstack.project_id" id="inputTenant" >
+        </div>
+        <div class="col-xs-6">
+          <label required class="control-label" for="inputRegion">Region(optional)</label>
+          <input class="form-control" placeholder="RegionOne" ng-disabled=status.credentials_status ng-model="openstack.region" id="inputRegion" ng-init="openstack.region='RegionOne'">
+        </div>
+      </div>
+      <label required class="control-label" for="inputURL">Authentication URL </label>
+      <input class="form-control" placeholder="http://127.0.0.1:5000" ng-disabled=status.credentials_status ng-model="openstack.url" id="inputURL" >
+      <button class="btn btn-success btn-block btn-lg field-diff"  ng-click="checkCredentials()">I want to
+          <select name="mySelect" id="mySelect"
+      ng-options="method for method in options.availableOptions"
+      ng-model="openstack.method"></select>
+       OVA</button>
+    </div>
+
+
+  </div>
+
+  <div class="row bottom-controls" ng-show=status.import_status>
+  <div class="col-xs-4">
+    <label for="file-upload" class="btn btn-default btn-lg btn-block"> Upload File</label>
+    <input type="file" id = "file-upload" file-model="myFile">
+    <label required class="control-label center-block">{{myFile.name}}</label>
+    <label class="control-label" for="stackName">Stack Name</label>
+    <input class="form-control" placeholder="stack_name" ng-model="my_stack" id="stackName" >
+  </div>
+  <div class="col-xs-4">
+    <button class="btn btn-success btn-block btn-lg" ng-click="pushToOpenstack()">Import to Openstack</button>
+  </div>
+
+ </div>
+
+ <div class="row bottom-controls" ng-show=status.export_status>
+  <div class="col-xs-4">
+    <label class="control-label" for="listOfVMs">List of virtual machines </label>
+    <input class="form-control" placeholder="[vmid1, vmid2 ...]" ng-model="my_vms" id="listOfVMs" >
+  </div>
+  <div class="col-xs-4">
+    <button class="btn btn-success btn-block btn-lg" ng-click="downloadFromOpenstack()">Download File</button>
+  </div>
+
+ </div>
+
+</div>

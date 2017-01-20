@@ -1,4 +1,5 @@
 import tarfile
+import uuid
 from xml.dom import minidom
 from shutil import copyfile
 
@@ -30,7 +31,8 @@ def transform_parsed_vms(ovf_file):
                                    cpu=parsed_vm.get_cpu(),
                                    ram=parsed_vm.get_memory(),
                                    image=parsed_file.get_map()[image],
-                                   network=parsed_vm.get_network()
+                                   network=parsed_vm.get_network(),
+                                   disk=parsed_file.get_map()["disk_" + image]
                                    )
                                 )
     list_results["vms"] = list_vms
@@ -55,4 +57,5 @@ class ParsedFile:
             image_map[element.getAttribute("ovf:id")] = element.getAttribute("ovf:href")
         for element in self.ElementTree.getElementsByTagName("Disk"):
             image_map[element.getAttribute("ovf:diskId")] = image_map.pop(element.getAttribute("ovf:fileRef"))
+            image_map["disk_" + element.getAttribute("ovf:diskId")] = element.getAttribute("ovf:capacity")
         return image_map

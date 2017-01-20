@@ -28,9 +28,9 @@ from openstack_dashboard.dashboards.project.stacks import mappings
 
 
 class ImportOVA(tables.LinkAction):
-    name = "import"
+    name = "importing"
     verbose_name = _("Import OVA")
-    url = "horizon:onboarding:ova:import"
+    url = "horizon:onboarding:importing:importing"
     classes = ("btn-launch", "ajax-modal")
     icon = "plus"
 
@@ -262,8 +262,8 @@ class StacksTable(tables.DataTable):
         return stack.stack_name
 
     class Meta(object):
-        name = "ova"
-        verbose_name = _("OVA")
+        name = "importing"
+        verbose_name = _("Import")
         pagination_param = 'stack_marker'
         status_columns = ["status", ]
         row_class = StacksUpdateRow

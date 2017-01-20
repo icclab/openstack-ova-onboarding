@@ -4,7 +4,7 @@ from horizon import exceptions
 from horizon import tabs
 
 from openstack_dashboard import api
-from openstack_dashboard.dashboards.onboarding.ova import tables
+from openstack_dashboard.dashboards.onboarding.importing import tables
 
 
 class StackTab(tabs.TableTab):
@@ -17,7 +17,7 @@ class StackTab(tabs.TableTab):
     def has_more_data(self, table):
         return self._has_more
 
-    def get_ova_data(self):
+    def get_importing_data(self):
         try:
             marker = self.request.GET.get(
                 tables.StacksTable._meta.pagination_param, None)

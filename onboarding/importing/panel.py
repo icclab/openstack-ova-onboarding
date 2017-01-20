@@ -13,13 +13,11 @@
 from django.utils.translation import ugettext_lazy as _
 
 import horizon
+from openstack_dashboard.dashboards.onboarding import dashboard
 
 
-class Onboarding(horizon.Dashboard):
-    name = _("Onboarding")
-    slug = "onboarding"  # Add your panels here.
-    panels = ('exporting', 'importing')
-    default_panel = 'exporting'  # Specify the slug of the dashboard's default panel.
+class Importing(horizon.Panel):
+    name = _("Importing")
+    slug = "importing"
 
-
-horizon.register(Onboarding)
+dashboard.Onboarding.register(Importing)

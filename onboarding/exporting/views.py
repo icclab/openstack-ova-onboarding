@@ -10,16 +10,17 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.conf.urls import url
-from django.conf.urls import patterns
+from horizon import tabs
 
-from openstack_dashboard.dashboards.onboarding.ova import views
+from openstack_dashboard.dashboards.onboarding.exporting import tabs as my_tabs
 
 
-INDEX_URL = r'^$'
-ADD_OVA_URL = r'^import'
+class ExportingIndexView(tabs.TabbedTableView):
+    # A very simple class-based view...
+    tab_group_class = my_tabs.MypanelTabs
+    template_name = 'onboarding/exporting/index.html'
 
-urlpatterns = [
-    url(INDEX_URL, views.OvaIndexView.as_view(), name='index'),
-    url(ADD_OVA_URL, views.ImportOVAView.as_view(), name='import'),
-]
+    def get_data(self, request, context, *args, **kwargs):
+        # Add data to the context here...
+        return context
+

@@ -10,10 +10,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from horizon.test import helpers as test
+from django.conf.urls import url
+
+from openstack_dashboard.dashboards.onboarding.exporting import views
 
 
-class OvaTests(test.TestCase):
-    # Unit tests for ova.
-    def test_me(self):
-        self.assertTrue(1 + 1 == 2)
+INDEX_URL = r'^$'
+
+urlpatterns = [
+    url(INDEX_URL, views.ExportingIndexView.as_view(), name='index'),
+]

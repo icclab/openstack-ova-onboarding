@@ -13,16 +13,16 @@ from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import forms
-from horizon import tabs, workflows
+from horizon import tabs
 
-from openstack_dashboard.dashboards.onboarding.ova import tabs as my_tabs
-from openstack_dashboard.dashboards.onboarding.ova.forms import ImportForm
+from openstack_dashboard.dashboards.onboarding.importing import tabs as my_tabs
+from openstack_dashboard.dashboards.onboarding.importing.forms import ImportForm
 
 
 class OvaIndexView(tabs.TabbedTableView):
     # A very simple class-based view...
     tab_group_class = my_tabs.MypanelTabs
-    template_name = 'onboarding/ova/index.html'
+    template_name = 'onboarding/importing/index.html'
 
     def get_data(self, request, context, *args, **kwargs):
         # Add data to the context here...
@@ -30,13 +30,13 @@ class OvaIndexView(tabs.TabbedTableView):
 
 
 class ImportOVAView (forms.ModalFormView):
-    template_name = 'onboarding/ova/import.html'
+    template_name = 'onboarding/importing/importing.html'
     modal_header = _("Import OVA")
-    form_id = "import"
+    form_id = "importing"
     form_class = ImportForm
     submit_label = _("Import")
-    submit_url = reverse_lazy("horizon:onboarding:ova:import")
-    success_url = reverse_lazy('horizon:onboarding:ova:index')
+    submit_url = reverse_lazy("horizon:onboarding:importing:importing")
+    success_url = reverse_lazy('horizon:onboarding:importing:index')
     page_title = _("Import OVA")
 
     def get_form_kwargs(self):

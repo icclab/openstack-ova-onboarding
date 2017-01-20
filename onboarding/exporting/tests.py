@@ -10,14 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.utils.translation import ugettext_lazy as _
-
-import horizon
-from openstack_dashboard.dashboards.onboarding import dashboard
+from horizon.test import helpers as test
 
 
-class Ova(horizon.Panel):
-    name = _("OVA")
-    slug = "ova"
-
-dashboard.Onboarding.register(Ova)
+class OvaTests(test.TestCase):
+    # Unit tests for exporting.
+    def test_me(self):
+        self.assertTrue(1 + 1 == 2)

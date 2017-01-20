@@ -7,11 +7,12 @@ def get_text(nodelist):
 
 
 class VM:
-    def __init__(self, name, cpu, ram, image, network):
+    def __init__(self, name, cpu, ram, disk, image, network):
         self.name = name
         self.cpu = cpu
         self.ram = ram
         self.image = image
+        self.disk = disk
         self.network = network
 
 

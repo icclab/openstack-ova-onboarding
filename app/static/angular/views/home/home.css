@@ -1,0 +1,36 @@
+.edit-container {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px
+}
+
+.field-diff {
+    margin-top: 10px;
+}
+
+.control-label{
+    margin-top: 10px;
+}
+.bottom-controls{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+select {
+    border: 0 none;
+    color: #FFFFFF;
+    background: transparent;
+}
+
+
+
